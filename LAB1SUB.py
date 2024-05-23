@@ -35,17 +35,8 @@ def visualize_graph(graph):
     plt.figure(figsize=(10, 8)) #i wanted to do arrow but it wouldnt make sense for them to not be able to return, so i removed arrow
     nx.draw(G, pos, with_labels=True, node_color='skyblue', node_size=2000, edge_color='k', font_size=15, font_weight='bold') #parameters of visualisation
     plt.title('graph structure, 10 locations in perak')
-    plt.show(block=False)
-
-
-#took this from the internet, to press x to close the window,
-    fig = plt.gcf()
-    fig.canvas.mpl_connect('key_press_event', on_key)
-
-def on_key(event):
-    if event.key == 'x':
-        plt.close(event.canvas.figure)
-        print("Exiting...")
+    plt.show(block=False) #this keeps the graph window open, at first i used plt.show but i couldnt input anything in terminal
+    #this is a shoddy implementation but it gets the job done.
 
 # Breadth first search functionality
 def bfs(graph, start, goal):
@@ -116,16 +107,6 @@ def main():
         print(f"Path from {start_location} to {destination} using {algorithm}: {path}")
     else:
         print(f"No path found from {start_location} to {destination} using {algorithm}.")
-
-
-
-# keeps the visual window running
-    while True:
-        try:
-            plt.pause(0.1)
-        except KeyboardInterrupt:
-            print("Exiting...")
-            break
 
 # runs main func
 if __name__ == "__main__":
