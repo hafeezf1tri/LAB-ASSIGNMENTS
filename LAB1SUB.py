@@ -1,10 +1,11 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-from networkx.drawing.nx_agraph import graphviz_layout
+from networkx.drawing.nx_agraph import graphviz_layout #this was a pain to install on a local machine but i dont like colab,
 from collections import deque #if u want me to stack stuff im using this..
 
 
 # the 10 locations, i did not sort them based on distance, i just googled 10 locations in perak
+#yes i didnt put seri iskandar im lazy
 perak_graph = {
     'Ipoh': {'Taiping', 'Kuala Kangsar', 'Batu Gajah', 'Kampar'},
     'Taiping': {'Ipoh', 'Kuala Kangsar', 'Teluk Intan'},
@@ -35,7 +36,9 @@ def visualize_graph(graph):
     plt.figure(figsize=(10, 8)) #i wanted to do arrow but it wouldnt make sense for them to not be able to return, so i removed arrow
     nx.draw(G, pos, with_labels=True, node_color='skyblue', node_size=2000, edge_color='k', font_size=15, font_weight='bold') #parameters of visualisation
     plt.title('graph structure, 10 locations in perak')
-    plt.show(block=False) #this keeps the graph window open, at first i used plt.show but i couldnt input anything in terminal
+    plt.show(block=False) 
+    #this keeps the graph window open, at first i used plt.show without block
+    # but i couldnt input anything in terminal
     #this is a shoddy implementation but it gets the job done.
 
 # Breadth first search functionality
@@ -95,9 +98,9 @@ def main():
     algorithm = input("Enter the algorithm (BFS or DFS): ").strip().upper()
     
     if algorithm == "BFS":
-        path = bfs(perak_graph, start_location, destination) #calls for bfs
+        path = bfs(perak_graph, start_location, destination) #shoves the input in bfs
     elif algorithm == "DFS":
-        path = dfs(perak_graph, start_location, destination) #calls for dfs
+        path = dfs(perak_graph, start_location, destination) #shoves the input in dfs
     else:
         print("Invalid algorithm choice. Please enter BFS or DFS.")
         return
