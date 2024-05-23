@@ -35,7 +35,7 @@ graph_03 = {
     'K': set(['I'])
 }
 
-# Example usage of BFS
+#using bfs, manual input start node and goal_node
 start_node = 'S'
 goal_node = 'H'
 path = bfs(graph_03, start_node, goal_node)
