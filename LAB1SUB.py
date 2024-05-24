@@ -39,7 +39,6 @@ def visualize_graph(graph):
     plt.show(block=False) 
     #this keeps the graph window open, at first i used plt.show without block
     # but i couldnt input anything in terminal
-    #this is a shoddy implementation but it gets the job done.
 
 # Breadth first search functionality
 def bfs(graph, start, goal):
