@@ -5,16 +5,16 @@ from networkx.drawing.nx_agraph import graphviz_layout #this was a pain to insta
 # the 10 locations, i did not sort them based on distance, i just googled 10 locations in perak
 #yes i didnt put seri iskandar im lazy
 perak_graph = {
-    'Ipoh': {'Taiping', 'Kuala Kangsar', 'Batu Gajah', 'Kampar'},
-    'Taiping': {'Ipoh', 'Kuala Kangsar', 'Teluk Intan'},
-    'Kuala Kangsar': {'Ipoh', 'Taiping', 'Gerik'},
-    'Teluk Intan': {'Taiping', 'Batu Gajah', 'Manjung'},
-    'Batu Gajah': {'Ipoh', 'Teluk Intan', 'Kampar'},
-    'Kampar': {'Ipoh', 'Batu Gajah', 'Tanjung Malim'},
-    'Manjung': {'Teluk Intan', 'Tanjung Malim'},
-    'Tanjung Malim': {'Kampar', 'Manjung', 'Slim River'},
-    'Slim River': {'Tanjung Malim', 'Gerik'},
-    'Gerik': {'Kuala Kangsar', 'Slim River'}
+    'Ipoh': {'Taiping', 'Batu Gajah', 'Kampar'},
+    'Taiping': {'Teluk Intan', 'Kuala Kangsar'},
+    'Kuala Kangsar': {'Gerik'},
+    'Teluk Intan': {'Manjung'},
+    'Batu Gajah': {},
+    'Kampar': {'Tanjung Malim'},
+    'Manjung': {},
+    'Tanjung Malim': {'Slim River'},
+    'Slim River': {},
+    'Gerik': {}
 }
 
 # function to visualise the graph
