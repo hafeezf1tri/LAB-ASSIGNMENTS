@@ -1,8 +1,6 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 from networkx.drawing.nx_agraph import graphviz_layout #this was a pain to install on a local machine but i dont like colab,
-from collections import deque #if u want me to stack stuff im using this..
-
 
 # the 10 locations, i did not sort them based on distance, i just googled 10 locations in perak
 #yes i didnt put seri iskandar im lazy
@@ -42,23 +40,22 @@ def visualize_graph(graph):
 
 # Breadth first search functionality
 def bfs(graph, start, goal):
-    queue = deque([(start, [start])])
-    visited = set()
-
-    while queue:
-        (vertex, path) = queue.popleft()
-        visited.add(vertex)
-        print(f"Current node is: {vertex}")
-        print(f"Visited is: {list(visited)}")
-        
-        for neighbor in graph[vertex]:
-            if neighbor == goal:
-                return path + [neighbor]
-            if neighbor not in visited:
-                visited.add(neighbor)
-                queue.append((neighbor, path + [neighbor]))
+    visited = []
+    queue = [start]
     
-    return None
+    while queue:
+        print("Visited: ", visited)
+        print("Queue: ", queue)
+        current = queue.pop(0)  # pop from the front of the list
+        if current not in visited:
+            visited.append(current)
+            if current == goal:
+                break
+            for neighbor in graph[current]:
+                if neighbor not in visited and neighbor not in queue:
+                    queue.append(neighbor)  # append to the end of the list
+    
+    return visited
 
 # Depth first search functionality
 def dfs(graph, start, goal):
@@ -83,7 +80,7 @@ def dfs(graph, start, goal):
     return visited
 
 
-#user input for start location,
+#user input for start location, goal, and the algo
 
 def main():
     visualize_graph(perak_graph)
