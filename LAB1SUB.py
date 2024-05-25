@@ -48,7 +48,9 @@ def bfs(graph, start, goal):
     while queue:
         (vertex, path) = queue.popleft()
         visited.add(vertex)
-
+        print(f"Current node is: {vertex}")
+        print(f"Visited is: {list(visited)}")
+        
         for neighbor in graph[vertex]:
             if neighbor == goal:
                 return path + [neighbor]
