@@ -19,7 +19,7 @@ perak_graph = {
     'Gerik': {'Kuala Kangsar', 'Slim River'}
 }
 
-# to visualise the graph
+# function to visualise the graph
 def visualize_graph(graph):
     # create the garph
     G = nx.Graph()
@@ -38,7 +38,7 @@ def visualize_graph(graph):
     plt.title('graph structure, 10 locations in perak')
     plt.show(block=False) 
     #this keeps the graph window open, at first i used plt.show without block
-    # but i couldnt input anything in terminal
+
 
 # Breadth first search functionality
 def bfs(graph, start, goal):
