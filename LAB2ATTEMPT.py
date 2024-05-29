@@ -1,9 +1,9 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-from networkx.drawing.nx_agraph import graphviz_layout #this was a pain to install on a local machine but i dont like colab,
+from networkx.drawing.nx_agraph import graphviz_layout
+import heapq
 
-# the 10 locations, i did not sort them based on distance, i just googled 10 locations in perak
-#yes i didnt put seri iskandar im lazy
+# The 10 locations in Perak
 perak_graph = {
     'Ipoh': {'Taiping', 'Kuala Kangsar', 'Batu Gajah', 'Kampar'},
     'Taiping': {'Ipoh', 'Kuala Kangsar', 'Teluk Intan'},
@@ -17,99 +17,95 @@ perak_graph = {
     'Gerik': {'Kuala Kangsar', 'Slim River'}
 }
 
-
-# function to visualise the graph
+# Function to visualize the graph
 def visualize_graph(graph):
-    # create the garph
     G = nx.Graph()
-
-    # add nodes & edges
     for node, neighbors in graph.items():
         for neighbor in neighbors:
             G.add_edge(node, neighbor)
-
-    # force the layout of the graph visual into a tree
     pos = graphviz_layout(G, prog='dot')
+    plt.figure(figsize=(10, 8))
+    nx.draw(G, pos, with_labels=True, node_color='skyblue', node_size=2000, edge_color='k', font_size=15, font_weight='bold')
+    plt.title('Graph Structure: 10 Locations in Perak')
+    plt.show(block=False)
 
-    # draw the graph with spec
-    plt.figure(figsize=(10, 8)) #i wanted to do arrow but it wouldnt make sense for them to not be able to return, so i removed arrow
-    nx.draw(G, pos, with_labels=True, node_color='skyblue', node_size=2000, edge_color='k', font_size=15, font_weight='bold') #parameters of visualisation
-    plt.title('graph structure, 10 locations in perak')
-    plt.show(block=False) 
-    #this keeps the graph window open, at first i used plt.show without block
-
-
-# Breadth first search functionality
+# Breadth-First Search (BFS) function
 def bfs(graph, start, goal):
     visited = []
     queue = [start]
-    
     while queue:
-        print("Visited: ", visited)
-        print("Queue: ", queue)
-        current = queue.pop(0)  # pop from the front of the list
+        print("Visited:", visited)
+        print("Queue:", queue)
+        current = queue.pop(0)
         if current not in visited:
             visited.append(current)
             if current == goal:
                 break
             for neighbor in graph[current]:
                 if neighbor not in visited and neighbor not in queue:
-                    queue.append(neighbor)  # append to the end of the list
-    
+                    queue.append(neighbor)
     return visited
 
-# Depth first search functionality
+# Depth-First Search (DFS) function
 def dfs(graph, start, goal):
     visited = []
     stack = [start]
-    
     while stack:
         current = stack.pop()
-        print("Current node is: {}".format(current))
-        
+        print("Current node is:", current)
         if current == goal:
             visited.append(current)
             break
-        
         for neighbor in graph[current]:
             if neighbor not in visited:
                 stack.append(neighbor)
-        
         visited.append(current)
-        print("Visited is: {}".format(visited))
-    
+        print("Visited is:", visited)
     return visited
 
+# Uniform Cost Search (UCS) function
+def ucs(graph, start, goal):
+    visited = set()
+    queue = [(0, start, [])]  # (cost, node, path)
+    while queue:
+        cost, node, path = heapq.heappop(queue)
+        if node not in visited:
+            visited.add(node)
+            path = path + [node]
+            if node == goal:
+                return path
+            for neighbor in graph[node]:
+                if neighbor not in visited:
+                    heapq.heappush(queue, (cost + 1, neighbor, path))
+    return []
 
-#user input for start location, goal, and the algo
-
+# User input for start location, goal, and the algorithm
 def main():
     visualize_graph(perak_graph)
-    #CASE SENSITIVE INPUT
-    print(f"INPUT IS CASE SENSITIVE, BE WARY")
+    print("INPUT IS CASE SENSITIVE, BE WARY")
     start_location = input("Enter the start location: ")
     destination = input("Enter the destination: ")
-    
+
     if start_location not in perak_graph or destination not in perak_graph:
         print("Invalid locations. Please enter valid start and destination locations from the graph.")
         return
-    
-    algorithm = input("Enter the algorithm (BFS or DFS): ").strip().upper()
-    
+
+    algorithm = input("Enter the algorithm (BFS, DFS, UCS): ").strip().upper()
+
     if algorithm == "BFS":
-        path = bfs(perak_graph, start_location, destination) #shoves the input in bfs
+        path = bfs(perak_graph, start_location, destination)
     elif algorithm == "DFS":
-        path = dfs(perak_graph, start_location, destination) #shoves the input in dfs
+        path = dfs(perak_graph, start_location, destination)
+    elif algorithm == "UCS":
+        path = ucs(perak_graph, start_location, destination)
     else:
-        print("Invalid algorithm choice. Please enter BFS or DFS.")
+        print("Invalid algorithm choice. Please enter BFS, DFS, or UCS.")
         return
-    
-    #exception checking if input is correct, honestly i didnt wanna do this tbh
+
     if path:
         print(f"Path from {start_location} to {destination} using {algorithm}: {path}")
     else:
         print(f"No path found from {start_location} to {destination} using {algorithm}.")
 
-# runs main func
 if __name__ == "__main__":
     main()
