@@ -98,10 +98,6 @@ def main():
         path = dfs(perak_graph, start_location, destination)
     elif algorithm == "UCS":
         path = ucs(perak_graph, start_location, destination)
-    elif algorithm == "all":
-        path = bfs(perak_graph, start_location, destination)
-        path = dfs(perak_graph, start_location, destination)
-        path = ucs(perak_graph, start_location, destination)
     else:
         print("Invalid algorithm choice. Please enter BFS, DFS, or UCS.")
         return
