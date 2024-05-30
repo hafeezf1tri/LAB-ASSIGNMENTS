@@ -3,65 +3,63 @@ import matplotlib.pyplot as plt
 from networkx.drawing.nx_agraph import graphviz_layout
 import heapq
 
-# The 10 locations in Perak
+# The 10 locations in Perak with costs
 perak_graph = {
     'Ipoh': {'Taiping': 10, 'Kuala Kangsar': 20, 'Batu Gajah': 30, 'Kampar': 40},
-    'Taiping': {'Ipoh', 'Kuala Kangsar', 'Teluk Intan'},
-    'Kuala Kangsar': {'Ipoh', 'Taiping', 'Gerik'},
-    'Teluk Intan': {'Taiping', 'Batu Gajah', 'Manjung'},
-    'Batu Gajah': {'Ipoh', 'Teluk Intan', 'Kampar'},
-    'Kampar': {'Ipoh', 'Batu Gajah', 'Tanjung Malim'},
-    'Manjung': {'Teluk Intan', 'Tanjung Malim'},
-    'Tanjung Malim': {'Kampar', 'Manjung', 'Slim River'},
-    'Slim River': {'Tanjung Malim', 'Gerik'},
-    'Gerik': {'Kuala Kangsar', 'Slim River'}
+    'Taiping': {'Ipoh': 10, 'Kuala Kangsar': 25, 'Teluk Intan': 35},
+    'Kuala Kangsar': {'Ipoh': 20, 'Taiping': 25, 'Gerik': 30},
+    'Teluk Intan': {'Taiping': 35, 'Batu Gajah': 20, 'Manjung': 15},
+    'Batu Gajah': {'Ipoh': 30, 'Teluk Intan': 20, 'Kampar': 10},
+    'Kampar': {'Ipoh': 40, 'Batu Gajah': 10, 'Tanjung Malim': 25},
+    'Manjung': {'Teluk Intan': 15, 'Tanjung Malim': 40},
+    'Tanjung Malim': {'Kampar': 25, 'Manjung': 40, 'Slim River': 10},
+    'Slim River': {'Tanjung Malim': 10, 'Gerik': 50},
+    'Gerik': {'Kuala Kangsar': 30, 'Slim River': 50}
 }
 
 # Function to visualize the graph
 def visualize_graph(graph):
     G = nx.Graph()
     for node, neighbors in graph.items():
-        for neighbor in neighbors:
-            G.add_edge(node, neighbor)
+        for neighbor, cost in neighbors.items():
+            G.add_edge(node, neighbor, weight=cost)
     pos = graphviz_layout(G, prog='dot')
     plt.figure(figsize=(10, 8))
     nx.draw(G, pos, with_labels=True, node_color='skyblue', node_size=2000, edge_color='k', font_size=15, font_weight='bold')
-    plt.title('Graph Structure: 10 Locations in Perak')
+    edge_labels = nx.get_edge_attributes(G, 'weight')
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
+    plt.title('Graph Structure: 10 Locations in Perak with Costs')
     plt.show(block=False)
 
 # Breadth-First Search (BFS) function
 def bfs(graph, start, goal):
-    visited = []
-    queue = [start]
+    visited = set()
+    queue = [(start, [start])]
     while queue:
-        print("Visited:", visited)
-        print("Queue:", queue)
-        current = queue.pop(0)
+        current, path = queue.pop(0)
+        if current == goal:
+            return path
         if current not in visited:
-            visited.append(current)
-            if current == goal:
-                break
+            visited.add(current)
             for neighbor in graph[current]:
-                if neighbor not in visited and neighbor not in queue:
-                    queue.append(neighbor)
-    return visited
+                if neighbor not in visited:
+                    queue.append((neighbor, path + [neighbor]))
+    return []
 
 # Depth-First Search (DFS) function
 def dfs(graph, start, goal):
-    visited = []
-    stack = [start]
+    visited = set()
+    stack = [(start, [start])]
     while stack:
-        current = stack.pop()
-        print("Current node is:", current)
+        current, path = stack.pop()
         if current == goal:
-            visited.append(current)
-            break
-        for neighbor in graph[current]:
-            if neighbor not in visited:
-                stack.append(neighbor)
-        visited.append(current)
-        print("Visited is:", visited)
-    return visited
+            return path
+        if current not in visited:
+            visited.add(current)
+            for neighbor in graph[current]:
+                if neighbor not in visited:
+                    stack.append((neighbor, path + [neighbor]))
+    return []
 
 # Uniform Cost Search (UCS) function
 def ucs(graph, start, goal):
@@ -74,9 +72,9 @@ def ucs(graph, start, goal):
             path = path + [node]
             if node == goal:
                 return path
-            for neighbor in graph[node]:
+            for neighbor, edge_cost in graph[node].items():
                 if neighbor not in visited:
-                    heapq.heappush(queue, (cost + 1, neighbor, path))
+                    heapq.heappush(queue, (cost + edge_cost, neighbor, path))
     return []
 
 # User input for start location, goal, and the algorithm
