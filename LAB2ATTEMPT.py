@@ -90,7 +90,7 @@ def main():
         print("Invalid locations. Please enter valid start and destination locations from the graph.")
         return
 
-    algorithm = input("Enter the algorithm (BFS, DFS, UCS or all): ").strip().upper()
+    algorithm = input("Enter the algorithm (BFS, DFS, UCS): ").strip().upper()
 
     if algorithm == "BFS":
         path = bfs(perak_graph, start_location, destination)
