@@ -65,7 +65,7 @@ def dfs(graph, start, goal):
         print("Visited is:", visited)
     return visited
 
-# Uniform Cost Search (UCS) function
+# uniform Cost Search (UCS) function
 def ucs(graph, start, goal):
     visited = set()
     queue = [(0, start, [])]  # (cost, node, path)
@@ -81,7 +81,7 @@ def ucs(graph, start, goal):
                     heapq.heappush(queue, (cost + edge_cost, neighbor, path))
     return []
 
-# User input for start location and goal, all algorithms are used in a while loop
+# user input for start location and goal, all algorithms are used in a while loop
 def main():
     visualize_graph(perak_graph)
     print("INPUT IS CASE SENSITIVE, BE WARY")
