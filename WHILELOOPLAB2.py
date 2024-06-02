@@ -81,7 +81,7 @@ def ucs(graph, start, goal):
                     heapq.heappush(queue, (cost + edge_cost, neighbor, path))
     return []
 
-# user input for start location and goal, all algorithms are used in a while loop
+# user input for start location and goal, all algorithms are put in a while loop
 def main():
     visualize_graph(perak_graph)
     print("INPUT IS CASE SENSITIVE, BE WARY")

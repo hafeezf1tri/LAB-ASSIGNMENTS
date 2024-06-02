@@ -1,3 +1,3 @@
-# graph visual for 10 locations in perak
-for lab 1 - 
-including lab 2
+# ARTIFICAL INTELLIGENCE LAB
+LAB1SUB.py - Code for Lab 1
+WHILELOOPLAB2.py - Code for Lab 2
